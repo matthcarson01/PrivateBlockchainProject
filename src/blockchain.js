@@ -126,7 +126,7 @@ class Blockchain {
             let messageTime = parseInt(message.split(':')[1]);
             let currentTime = parseInt(new Date().getTime().toString().slice(0, -3));
 
-            if (currentTime - messageTime > 3000) {
+            if (currentTime - messageTime > 300  ) {
                 reject('Time elapsed greater than 5 minutes');
             } else if (!bitcoinMessage.verify(message, address, signature)) {
                 reject('Message was not verified');
