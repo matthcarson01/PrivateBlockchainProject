@@ -79,8 +79,10 @@ class Blockchain {
             self.chain.push(block);
             //Don't forget to update the this.height class variable.
             self.height = self.chain.length - 1;
-            await self.validateChain();
-            resolve(block);
+            await self.validateChain().then((result)=>{
+                if(result.length > 0){ reject(result) }
+                resolve(block);
+            });  
         });
     }
 
@@ -214,20 +216,6 @@ class Blockchain {
         let self = this;
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
-            // let promises = [];
-            // self.chain.forEach((b, i) => {
-            //     //1. You should validate each block using `validateBlock`
-            //     promises.push(b.validate());
-            //     //2. Each Block should check the with the previousBlockHash
-            //     if (i < 0 && b.previousBlockHash !== self.chain[i - 1].hash) {
-            //         errorLog.push(`Previous hash doesn't match, block height = ${b.height}`);
-            //     }
-            // });
-            // Promise.all(promises).then(results => {
-            //     results.forEach((vBlock, i) => {
-            //         if (!vBlock) errorLog.push(`Block is not valid, block height = ${self.chain[i].height}`);
-            //     })
-            // });
             Promise.all(
                 self.chain.forEach((b, i) => {
                     //2. Each Block should check the with the previousBlockHash
